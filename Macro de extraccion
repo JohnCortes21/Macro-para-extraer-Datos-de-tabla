@@ -1,0 +1,92 @@
+Function CreateData(c, nameGrp, idGrp, ancho_ini, alto_ini, ran_ini, ran_fin, ral_ini, ral_fin)
+    Dim i, j, num_aux As Integer
+    Dim num As Double
+    Dim hoja0, hoja1, str_aux As String
+    
+    hoja0 = "Hoja0"
+    hoja1 = "Hoja1"
+    
+    If (c = 1) Then
+        Sheets(hoja1).Select
+        Cells.Select
+        Selection.ClearContents
+        Selection.NumberFormat = "@"
+    End If
+    
+    For i = ral_ini To ral_fin
+        For j = ran_ini To ran_fin
+            num = Round(Sheets(hoja0).Range(Chr(j) & i).Value, 0)
+            If (num <> 0) Then
+                
+                str_aux = Sheets(hoja0).Range(Chr(j) & ancho_ini).Value
+                num_aux = str_aux
+                If (InStr(str_aux, ".")) Then
+                    Sheets(hoja1).Range("A" & c).Value = str_aux
+                Else
+                    Sheets(hoja1).Range("A" & c).Value = Left(str_aux, 1) & "." & Mid(str_aux, 2)
+                End If
+                
+                
+                If (j <> ran_fin) Then
+                    Sheets(hoja1).Range("B" & c).Value = Sheets(hoja0).Range(Chr(j) & (ancho_ini + 1)).Value & "4"
+                Else
+                    Sheets(hoja1).Range("B" & c).Value = Sheets(hoja0).Range(Chr(j) & (ancho_ini + 1)).Value
+                End If
+                
+                
+                str_aux = Sheets(hoja0).Range(Chr(alto_ini) & i).Value
+                num_aux = str_aux
+                If (InStr(str_aux, ".")) Then
+                    Sheets(hoja1).Range("C" & c).Value = str_aux
+                Else
+                    Sheets(hoja1).Range("C" & c).Value = Left(str_aux, 1) & "." & Mid(str_aux, 2)
+                End If
+                
+                
+                If (i <> ral_fin) Then
+                    Sheets(hoja1).Range("D" & c).Value = Sheets(hoja0).Range(Chr(alto_ini + 1) & i).Value & "4"
+                Else
+                    Sheets(hoja1).Range("D" & c).Value = Sheets(hoja0).Range(Chr(alto_ini + 1) & i).Value
+                End If
+                
+                Sheets(hoja1).Range("E" & c).Value = "1"
+                Sheets(hoja1).Range("F" & c).Value = nameGrp
+                Sheets(hoja1).Range("G" & c).Value = idGrp
+                Sheets(hoja1).Range("H" & c).Value = num & "000"
+                c = c + 1
+            End If
+        Next j
+    Next i
+    CreateData = c
+End Function
+
+
+Sub Hola()
+    Dim i, j, c, ancho_ini, alto_ini, ran_ini, ran_fin, ral_ini, ral_fin As Integer
+    c = 1
+    
+    ancho_ini = 5      'Fila inicial del ancho
+    alto_ini = 66       'Fila inicial del alto
+    
+    ral_ini = 8        'Rango alto inicial
+    ral_fin = 11       'Rango alto final
+    ran_ini = 69        'Rango ancho inicial
+    ran_fin = 80        'Rango ancho final
+    c = CreateData(c, "SHR EL STD ECO BL", "1309", ancho_ini, alto_ini, ran_ini, ran_fin, ral_ini, ral_fin)
+    
+    
+    ancho_ini = 20
+    ral_ini = 23
+    ral_fin = 36
+    c = CreateData(c, "SHR EL ADV ECO BL", "1310", ancho_ini, alto_ini, ran_ini, ran_fin, ral_ini, ral_fin)
+
+
+    ancho_ini = 45
+    ral_ini = 48
+    ral_fin = 65
+    c = CreateData(c, "SHR EL VRS ECO BL", "1311", ancho_ini, alto_ini, ran_ini, ran_fin, ral_ini, ral_fin)
+    
+    
+End Sub
+
+
